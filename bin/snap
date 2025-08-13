@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+// Require the root project Composer autoloader
+$autoload = getcwd() . '/vendor/autoload.php';
+if (!file_exists($autoload)) {
+    fwrite(STDERR, "Composer autoloader not found. Please run 'composer install'.\n");
+    exit(1);
+}
+require $autoload;
+
+use ThanosPHP\InfinityGauntlet;
+
+// Default path is current working directory... be careful!
+$path = getcwd();
+
+$dryRun = in_array('--dry-run', $argv) || in_array('-d', $argv);
+$help   = in_array('--help', $argv) || in_array('-h', $argv);
+
+$pathIndex = array_search('--path', $argv, true);
+if ($pathIndex === false) {
+    $pathIndex = array_search('-p', $argv, true);
+}
+
+if ($pathIndex !== false && isset($argv[$pathIndex + 1])) {
+    $path = $argv[$pathIndex + 1];
+}
+
+if ($help) {
+    echo "Usage: snap [--dry-run|-d] [--path|-p <directory>]\n";
+    exit(0);
+}
+
+$gauntlet = new InfinityGauntlet();
+$gauntlet->snap($path, $dryRun);
+
+echo $dryRun
+    ? "Dry run complete. No files were deleted.\n"
+    : "Snap complete. Some files may have been deleted.\n";
