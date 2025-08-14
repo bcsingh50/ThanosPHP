@@ -40,6 +40,8 @@ if ($help) {
 $gauntlet = new InfinityGauntlet();
 $gauntlet->snap($path, $dryRun, $withGauntlet);
 
-echo $dryRun
-    ? "Dry run complete. No files were actually harmed.\n"
-    : "Snap complete. What did it cost? Half of your files.\n";
+if ($dryRun) {
+    echo "Dry run complete. No files were deleted.\n";
+} elseif ($withGauntlet) {
+    echo "Snap complete. Some files may have been deleted.\n";
+}
