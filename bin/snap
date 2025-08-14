@@ -15,8 +15,9 @@ use ThanosPHP\InfinityGauntlet;
 // Default path is current working directory... be careful!
 $path = getcwd();
 
-$dryRun = in_array('--dry-run', $argv) || in_array('-d', $argv);
-$help   = in_array('--help', $argv) || in_array('-h', $argv);
+$dryRun       = in_array('--dry-run', $argv) || in_array('-d', $argv);
+$withGauntlet = in_array('--with-gauntlet', $argv);
+$help         = in_array('--help', $argv) || in_array('-h', $argv);
 
 $pathIndex = array_search('--path', $argv, true);
 if ($pathIndex === false) {
@@ -28,13 +29,17 @@ if ($pathIndex !== false && isset($argv[$pathIndex + 1])) {
 }
 
 if ($help) {
-    echo "Usage: snap [--dry-run|-d] [--path|-p <directory>]\n";
+    echo "Usage: snap [--dry-run|-d] [--with-gauntlet] [--path|-p <directory>]\n";
+    echo "Options:\n";
+    echo "  --dry-run, -d       Preview which files would be deleted.\n";
+    echo "  --with-gauntlet     Actually delete files.\n";
+    echo "  --path, -p <dir>    Specify a directory (default: current dir).\n";
     exit(0);
 }
 
 $gauntlet = new InfinityGauntlet();
-$gauntlet->snap($path, $dryRun);
+$gauntlet->snap($path, $dryRun, $withGauntlet);
 
 echo $dryRun
-    ? "Dry run complete. No files were deleted.\n"
-    : "Snap complete. Some files may have been deleted.\n";
+    ? "Dry run complete. No files were actually harmed.\n"
+    : "Snap complete. What did it cost? Half of your files.\n";

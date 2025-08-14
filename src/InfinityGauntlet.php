@@ -13,8 +13,20 @@ class InfinityGauntlet
         '#composer\.json$#',            // ignore composer.json
     ];
 
-    public function snap(string $path, bool $dryRun = false): void
+    /**
+     * Perform the snap.
+     *
+     * @param string $path The path to snap files from.
+     * @param bool $dryRun If true, only show what would be deleted.
+     * @param bool $withGauntlet Must be true to allow real deletion.
+     */
+    public function snap(string $path, bool $dryRun = false, bool $withGauntlet = false): void
     {
+        if (!$dryRun && !$withGauntlet) {
+            echo "Without the gauntlet I am nothing, run me with either --dry-run or if you are ready to face my wrath --with-gauntlet\n";
+            return;
+        }
+
         $files = $this->getFiles($path);
 
         if (empty($files)) {

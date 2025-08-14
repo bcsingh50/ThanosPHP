@@ -13,7 +13,7 @@ This should not delete files in:
 - .env
 - composer.json
 
-Warning... this has not really been tested. I ran it locally twice on a windows machine, use at your own risk! 
+Warning... this has not really been tested. I ran it locally on a windows machine, use at your own risk! 
 
 
 ## Install
@@ -24,19 +24,21 @@ composer require bcsingh50/thanos-php
 ## Run (Via CLI) 
 ```bash
 vendor/bin/snap --dry-run
+```
 
-vendor/bin/snap
+Once you are brave...
+```bash
+vendor/bin/snap --with-gauntlet
 ```
 
 ## Run (Via PHP) 
 ```bash
 ob_start(); // optional to see output. 
-$gauntlet->snap($path, $dryRun);
+$gauntlet->snap($path, $dryRun, $withGauntlet);
 $output = ob_get_clean();
 
 echo $output;
 ```
 
 ## Future improvements
-- Add --with-gauntlet flag, so default run without flag does nothing. 
 - Add logging and better output so you do not have to capture output from echos. 
